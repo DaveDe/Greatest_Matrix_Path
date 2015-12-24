@@ -33,27 +33,35 @@ public class Tile{
 		}
 		
 		public void addReachableTiles(int x, int y, int value, int gridSize){
-			int flag = 0;
-			for(int i = y-2; i <= y+2; i++){
-				
-				for(int j = x-2+flag; j <= x+2; j+=2){
-					if(j >=0 && i >= 0 && i < gridSize && j < gridSize){
-						Coordinates c = new Coordinates(j,i,value);
-						if(!inArrayList(c)){
-							if(Math.abs(this.c.x - j) + Math.abs(this.c.y - i) < gridSize){//ensure tile isnt too far away
-								reachableTiles.add(c);
+			
+			int evenFactor = 0;
+			
+			//even sized grids (offset by 1)
+			if(gridSize%2 == 0){
+				evenFactor = -1;
+			}
+				int flag = 0;
+				for(int i = y-2; i <= y+2; i++){
+					
+					for(int j = x-2+flag+evenFactor; j <= x+2; j+=2){
+						if(j >=0 && i >= 0 && i < gridSize && j < gridSize){
+							Coordinates c = new Coordinates(j,i,value);
+							if(!inArrayList(c)){
+								if(Math.abs(this.c.x - j) + Math.abs(this.c.y - i) < gridSize){//ensure tile isnt too far away
+									reachableTiles.add(c);
+								}
 							}
 						}
 					}
+					//add 1 to x for every other row
+					if(flag == 0){
+						flag = 1;
+					}else{
+						flag = 0;
+					}
+					
 				}
-				//add 1 to x for every other row
-				if(flag == 0){
-					flag = 1;
-				}else{
-					flag = 0;
-				}
-				
-			}
+			
 		}
 		
 		public boolean inArrayList(Coordinates c){
